@@ -1,6 +1,23 @@
 /* ==============================
-   CONFIGURAÇÕES GERAIS
+   VARIÁVEIS E CONFIGURAÇÕES GERAIS
 ================================= */
+
+:root {
+    --primary-color: #3158d9;
+    --accent-color: #2e9b4d;
+    --text-color: #111111;
+    --text-muted: #555555;
+    --bg-page: #ffffff;
+    --bg-card: #f7f7f7;
+    --bg-image: #e2e8f0;
+    --border-color: #111111;
+    --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: Georgia, "Times New Roman", serif;
+    --radius-sm: 6px;
+    --radius-md: 12px;
+    --radius-lg: 15px;
+    --transition: all 0.3s ease;
+}
 
 * {
     margin: 0;
@@ -13,27 +30,17 @@ html {
 }
 
 body {
-    font-family: Georgia, "Times New Roman", serif;
-    background-color: #ffffff;
-    color: #111111;
-}
-
-
-/* ==============================
-   CONTAINER PRINCIPAL
-================================= */
-
-.pagina {
+    font-family: var(--font-main);
+    background-color: var(--bg-page);
+    color: var(--text-color);
+    line-height: 1.5;
     width: 90%;
     max-width: 1100px;
-    margin: 120px auto 0;
-
-    border-top: 2px solid #111;
-    border-bottom: 2px solid #111;
-
-    padding: 20px;
+    margin: 40px auto;
+    border-top: 2px solid var(--border-color);
+    border-bottom: 2px solid var(--border-color);
+    padding: 30px 20px;
 }
-
 
 /* ==============================
    CABEÇALHO
@@ -43,12 +50,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    padding-bottom: 10px;
-
-    border-bottom: 1px solid #999;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
 }
-
 
 /* ==============================
    LOGO
@@ -63,28 +67,23 @@ body {
 .logo-p2 {
     width: 78px;
     height: 50px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
-    background-color: #3158d9;
-
-    color: white;
-
-    font-family: Arial, sans-serif;
+    background-color: var(--primary-color);
+    color: #ffffff;
+    font-family: var(--font-main);
     font-size: 32px;
     font-weight: bold;
-
-    border-radius: 6px;
+    border-radius: var(--radius-sm);
 }
 
 .logo span {
-    font-family: Georgia, "Times New Roman", serif;
+    font-family: var(--font-serif);
     font-size: 27px;
     font-weight: bold;
+    letter-spacing: 0.5px;
 }
-
 
 /* ==============================
    MENU
@@ -98,22 +97,21 @@ body {
 
 .menu a {
     text-decoration: none;
-
-    color: #111;
-
+    color: var(--text-color);
     font-size: 16px;
-
-    transition: 0.3s;
+    font-weight: 500;
+    transition: var(--transition);
+    position: relative;
 }
 
 .menu a:hover {
-    color: #2e9b4d;
+    color: var(--accent-color);
 }
 
 .menu a.ativo {
-    font-weight: bold;
+    font-weight: 700;
+    color: var(--accent-color);
 }
-
 
 /* ==============================
    HERO
@@ -121,30 +119,27 @@ body {
 
 .hero {
     max-width: 850px;
-
-    margin: 42px auto 45px;
-
+    margin: 40px auto;
     text-align: left;
 }
 
 .hero h1 {
     font-size: 36px;
     line-height: 1.2;
-
-    margin-bottom: 12px;
+    margin-bottom: 15px;
+    font-weight: 800;
 }
 
 .hero h1 span {
-    color: #2e9b4d;
+    color: var(--accent-color);
 }
 
 .hero p {
     max-width: 800px;
-
-    font-size: 23px;
-    line-height: 1.25;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--text-muted);
 }
-
 
 /* ==============================
    CARDS
@@ -152,106 +147,103 @@ body {
 
 .cards {
     display: grid;
-
     grid-template-columns: repeat(3, 1fr);
-
     gap: 35px;
-
     max-width: 850px;
-
-    margin: 0 auto 10px;
+    margin: 0 auto 30px;
 }
-
 
 /* ==============================
    CARD
 ================================= */
 
 .card {
-    background-color: #f7f7f7;
-
-    border-radius: 15px;
-
+    background-color: var(--bg-card);
+    border-radius: var(--radius-lg);
     padding: 15px;
-
     min-height: 300px;
-
-    transition: transform 0.3s ease,
-                box-shadow 0.3s ease;
+    transition: var(--transition);
+    border: 1px solid transparent;
 }
 
 .card:hover {
     transform: translateY(-5px);
-
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    border-color: #eaeaea;
 }
 
-
 /* ==============================
-   IMAGEM
+   IMAGEM DO CARD
 ================================= */
 
 .imagem-card {
     width: 100%;
-    height: 135px;
-
-    background-color: #d8d8d8;
-
-    border-radius: 12px;
-
+    height: 140px;
+    background-color: var(--bg-image);
+    border-radius: var(--radius-md);
     overflow: hidden;
+    position: relative;
 }
 
 .imagem-card img {
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-
     display: block;
 }
-
 
 /* ==============================
    CONTEÚDO DOS CARDS
 ================================= */
 
 .conteudo-card {
-    padding: 10px 4px;
+    padding: 12px 4px 4px;
 }
 
 .conteudo-card h2 {
     font-size: 20px;
-
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+    color: var(--text-color);
 }
 
 .conteudo-card p {
-    font-size: 16px;
-
-    line-height: 1.25;
+    font-size: 15px;
+    line-height: 1.35;
+    color: var(--text-muted);
 }
 
+/* ==============================
+   RODAPÉ
+================================= */
+
+.footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #ddd;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+}
 
 /* ==============================
    RESPONSIVIDADE
 ================================= */
 
 @media (max-width: 900px) {
-
-    .pagina {
+    body {
         width: 94%;
-        margin-top: 40px;
+        margin-top: 20px;
     }
 
     .header {
         flex-direction: column;
-        gap: 20px;
+        gap: 15px;
     }
 
     .menu {
         flex-wrap: wrap;
         justify-content: center;
+        gap: 18px;
     }
 
     .hero {
@@ -263,22 +255,19 @@ body {
     }
 
     .hero p {
-        font-size: 20px;
+        font-size: 19px;
     }
 
     .cards {
         grid-template-columns: 1fr;
-        max-width: 500px;
+        max-width: 450px;
     }
-
 }
 
-
 @media (max-width: 600px) {
-
-    .pagina {
+    body {
         padding: 15px;
-        margin-top: 20px;
+        margin-top: 10px;
     }
 
     .logo-p2 {
@@ -299,20 +288,15 @@ body {
         font-size: 14px;
     }
 
-    .hero {
-        margin-top: 30px;
-    }
-
     .hero h1 {
-        font-size: 27px;
+        font-size: 25px;
     }
 
     .hero p {
-        font-size: 18px;
+        font-size: 17px;
     }
 
     .cards {
         gap: 20px;
     }
-
 }

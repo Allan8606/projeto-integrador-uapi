@@ -1,45 +1,25 @@
 // ========================================
-// P2 CONECTA
-// JavaScript principal
+// P2 CONECTA - JavaScript Principal
 // ========================================
 
+// Aguarda o carregamento completo do HTML
 document.addEventListener("DOMContentLoaded", () => {
 
+    // Seleciona todos os links do menu de navegação
     const links = document.querySelectorAll(".menu a");
 
+    // Adiciona um evento de clique para cada link
     links.forEach(link => {
 
         link.addEventListener("click", function () {
 
-            // Remove o destaque dos outros links
+            // Remove a classe "ativo" de todos os links
             links.forEach(item => {
                 item.classList.remove("ativo");
             });
 
-            // Adiciona destaque ao link selecionado
+            // Adiciona a classe "ativo" apenas no link clicado
             this.classList.add("ativo");
-
-        });
-
-    });
-
-
-    // Animação simples dos cards
-    const cards = document.querySelectorAll(".card");
-
-    cards.forEach(card => {
-
-        card.addEventListener("click", () => {
-
-            const destino = card.id;
-
-            if (destino) {
-                document
-                    .getElementById(destino)
-                    .scrollIntoView({
-                        behavior: "smooth"
-                    });
-            }
 
         });
 
