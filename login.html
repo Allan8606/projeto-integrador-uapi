@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"content="width=device-width, initial-scale=1.0">
+    <title>Login | P2 Conecta</title>
+
+    <!-- CSS DO LOGIN -->
+    <link rel="stylesheet" href="css/login.css">
+</head>
+
+<body>
+
+
+    <!-- =================================
+         CONTAINER DO LOGIN
+    ================================== -->
+
+    <main class="login-container">
+
+
+        <!-- CAIXA DE LOGIN -->
+
+        <section class="login-box">
+
+            <!-- LOGO -->
+
+            <header class="header">
+             <div class="logo">
+             <img src="img/logo.webp" alt="Logo P2 Conecta"></div>
+            </header>
+
+            <!-- TÍTULO -->
+
+            <h1>Acesso ao Sistema</h1>
+            <p class="subtitulo">Entre para acessar o P2 Conecta</p>
+
+
+            <!-- =================================
+                 FORMULÁRIO
+            ================================== -->
+
+            <form id="loginForm">
+
+                <!-- TIPO DE USUÁRIO -->
+
+                <div class="campo">
+                    <label for="tipoUsuario"> Tipo de usuário</label>
+                    <select
+                        id="tipoUsuario" required>
+                        <option value="">Selecione o tipo de usuário</option>
+                        <option value="admin">Administrador</option>
+                        <option value="empreendedor">Empreendedor</option>
+                    </select>
+                </div>
+
+
+                <!-- E-MAIL -->
+
+                <div class="campo">
+                    <label for="email">E-mail</label>
+                    <input type="email" id="email" placeholder="Digite seu e-mail" required>
+                </div>
+
+
+                <!-- SENHA -->
+                <div class="campo">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" placeholder="Digite sua senha" required>
+                </div>
+
+
+                <!-- OPÇÕES -->
+
+                <div class="opcoes">
+                    <label class="lembrar">
+                        <input type="checkbox" id="lembrar">
+                        Lembrar de mim
+                    </label>
+                    <a href="#">Esqueci minha senha</a>
+                </div>
+
+
+                <!-- BOTÃO -->
+
+                <button type="submit">Entrar</button>
+            </form>
+
+
+            <!-- MENSAGEM DO JAVASCRIPT -->
+
+            <p id="mensagem" class="mensagem"></p>
+
+            <!-- VOLTAR -->
+
+            <a href="index.html" class="voltar"> ← Voltar para o início</a>
+        </section>
+    </main>
+
+    <!-- JAVASCRIPT DO LOGIN -->
+
+    <script src="js/login.js"></script>
+</body>
+
+</html>
