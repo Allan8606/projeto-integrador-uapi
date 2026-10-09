@@ -1,0 +1,194 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Cadastro de Eventos | P2 Conecta</title>
+
+    <link rel="stylesheet" href="css/eventos.css">
+    <script src="js/eventos.js" defer></script>
+</head>
+
+<body>
+
+    <!-- CABEÇALHO -->
+    <header class="header">
+
+        <a href="index.html" class="logo">
+            <img src="img/logo.webp"
+                 alt="Logo P2 Conecta">
+        </a>
+
+        <nav class="menu">
+            <a href="index.html">Início</a>
+            <a href="index.html#eventos">Eventos</a>
+            <a href="index.html#pontos">Pontos turísticos</a>
+            <a href="index.html#empreendimentos">
+                Empreendimentos
+            </a>
+            <a href="login.html">Login</a>
+        </nav>
+
+    </header>
+
+    <main>
+
+        
+        <div class="usuario-logado">
+    
+            <p id="usuarioAtual"></p>
+            <button type="button" id="btnSair">Sair</button>
+
+        </div>
+
+
+        <!-- APRESENTAÇÃO -->
+        <section class="intro">
+            <span class="tag">Painel de gerenciamento</span>
+
+            <h1>Cadastro de <span>Eventos</span></h1>
+
+            <p>
+                Cadastre e organize os eventos
+                de Pedro II em um só lugar.
+            </p>
+        </section>
+
+        <!-- FORMULÁRIO -->
+        <section class="painel">
+
+            <h2>Informações do evento</h2>
+
+            <form id="form-evento">
+
+                <div class="campos">
+
+                    <!-- ID -->
+                    <div class="campo">
+                        <label for="id-evento">
+                            ID do Evento
+                        </label>
+
+                        <input type="number"
+                               id="id-evento"
+                               readonly>
+
+                        <small>Gerado automaticamente</small>
+                    </div>
+
+                    <!-- NOME -->
+                    <div class="campo">
+                        <label for="nome">
+                            Nome do Evento *
+                        </label>
+
+                        <input type="text"
+                               id="nome"
+                               maxlength="120"
+                               placeholder="Ex.: Festival de Inverno"
+                               required>
+                    </div>
+
+                    <!-- DATA -->
+                    <div class="campo">
+                        <label for="data">
+                            Data do Evento *
+                        </label>
+
+                        <input type="date"
+                               id="data"
+                               required>
+                    </div>
+
+                    <!-- LOCAL -->
+                    <div class="campo">
+                        <label for="local">
+                            Local do Evento *
+                        </label>
+
+                        <input type="text"
+                               id="local"
+                               maxlength="160"
+                               placeholder="Ex.: Praça da Bonelle"
+                               required>
+                    </div>
+
+                    <!-- DESCRIÇÃO -->
+                    <div class="campo largura-total">
+                        <label for="descricao">
+                            Descrição *
+                        </label>
+
+                        <textarea id="descricao"
+                                  rows="5"
+                                  maxlength="1000"
+                                  placeholder="Descreva o evento..."
+                                  required></textarea>
+                    </div>
+
+                </div>
+
+                <!-- BOTÕES -->
+                <div class="acoes">
+
+                    <button type="submit"
+                            class="primario"
+                            id="salvar">
+                        Cadastrar evento
+                    </button>
+
+                    <button type="button"
+                            class="secundario"
+                            id="limpar">
+                        Limpar campos
+                    </button>
+
+                </div>
+
+                <p id="mensagem" role="status"></p>
+
+            </form>
+
+        </section>
+
+        <!-- TABELA -->
+        <section class="painel lista">
+
+            <div class="cabecalho-lista">
+                <h2>Eventos cadastrados</h2>
+                <span id="contador">0 eventos</span>
+            </div>
+
+            <div class="tabela-scroll">
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Data</th>
+                            <th>Local</th>
+                            <th>Descrição</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="lista-eventos">
+                    </tbody>
+
+                </table>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <p>© P2 Conecta — Todos os direitos reservados.</p>
+    </footer>
+
+</body>
+</html>
