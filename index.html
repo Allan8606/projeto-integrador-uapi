@@ -19,7 +19,7 @@
 
         <nav class="menu">
             <a href="#" class="ativo">Início</a>
-            <a href="#eventos">Eventos</a>
+            <a href="eventos.html">Eventos</a>
             <a href="#pontos">Pontos turísticos</a>
             <a href="#empreendimentos">Empreendimentos</a>
             <a href="login.html">Login</a>
@@ -56,6 +56,7 @@
                         festivais e apresentações da região.
                     </p>
                 </div>
+                <div id="eventos-dinamicos" class="cards-eventos"></div>
             </article>
 
             <!-- PONTOS TURÍSTICOS -->
@@ -96,6 +97,33 @@
     </footer>
 
     <script src="script.js"></script>
+    <script src="js/exibir-eventos.js"></script>
+    
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const cardEventos = document.getElementById("eventos");
+
+    if (!cardEventos) return;
+
+    cardEventos.style.cursor = "pointer";
+    cardEventos.setAttribute("role", "link");
+    cardEventos.setAttribute("tabindex", "0");
+
+    function abrirEventos() {
+        window.location.href = "eventos.html";
+    }
+
+    cardEventos.addEventListener("click", abrirEventos);
+
+    cardEventos.addEventListener("keydown", function(event) {
+        if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            abrirEventos();
+        }
+    });
+});
+</script>
+
 </body>
 
 </html>
