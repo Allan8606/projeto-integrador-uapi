@@ -1,0 +1,129 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(
+        135deg, #e9f0ff, #f5f9f5
+    );
+    color: #172235;
+}
+
+.pagina-cadastro {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px 15px;
+}
+
+.cadastro-box {
+    background: white;
+    width: 100%;
+    max-width: 460px;
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.10);
+}
+
+.logo {
+    display: block;
+    text-align: center;
+}
+
+.logo img {
+    width: 160px;
+    max-height: 100px;
+    object-fit: contain;
+}
+
+h1 {
+    text-align: center;
+    color: #3158d9;
+    margin-bottom: 10px;
+}
+
+.subtitulo {
+    text-align: center;
+    color: #617083;
+    line-height: 1.5;
+    margin-bottom: 25px;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 18px;
+}
+
+.campo label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.campo input {
+    padding: 13px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+.campo input:focus {
+    outline: 2px solid #3158d955;
+    border-color: #3158d9;
+}
+
+small {
+    color: #617083;
+}
+
+button {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    background: #3158d9;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #2446b5;
+}
+
+#mensagemCadastro {
+    text-align: center;
+    min-height: 20px;
+    font-size: 14px;
+}
+
+.link-login {
+    text-align: center;
+    margin-top: 22px;
+}
+
+.link-login a {
+    color: #3158d9;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.voltar {
+    display: block;
+    text-align: center;
+    margin-top: 20px;
+    color: #617083;
+    text-decoration: none;
+}
+
+@media (max-width: 500px) {
+    .cadastro-box {
+        padding: 24px;
+    }
+}

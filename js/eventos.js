@@ -1,277 +1,865 @@
 
 "use strict";
 
-// Armazenamento local
+/*
+========================================
+P2 CONECTA - GERENCIAMENTO DE EVENTOS
+
+Perfis:
+ADMIN - Gerencia todos os eventos
+EMPREENDEDOR - Gerencia os próprios
+
+Armazenamento: localStorage
+Autenticação: demonstração acadêmica
+========================================
+*/
+
+// ======================================
+// 1. CONFIGURAÇÕES
+// ======================================
+
 const CHAVE = "p2-conecta-eventos-v1";
 
-const form = document.querySelector("#form-evento");
-const lista = document.querySelector("#lista-eventos");
-const idCampo = document.querySelector("#id-evento");
-const mensagem = document.querySelector("#mensagem");
-const botaoSalvar = document.querySelector("#salvar");
+const perfilLogado = sessionStorage.getItem(
+    "p2PerfilDemo"
+);
 
-// Carregar os eventos salvos
-let eventos = carregar();
+const emailLogado = (
+    sessionStorage.getItem("p2EmailDemo") || ""
+).trim().toLowerCase();
+
+const usuarioAdministrador = perfilLogado === "admin";
+
+const usuarioAutorizado =
+    (perfilLogado === "admin" ||
+     perfilLogado === "empreendedor") &&
+    emailLogado !== "";
+
+// ======================================
+// 2. ELEMENTOS DO HTML
+// ======================================
+
+const form = document.getElementById("form-evento");
+
+const lista = document.getElementById("lista-eventos");
+
+const idCampo = document.getElementById("id-evento");
+
+const mensagem = document.getElementById("mensagem");
+
+const botaoSalvar = document.getElementById("salvar");
+
+const campoImagem = document.getElementById("imagem");
+
+const preview = document.getElementById("preview-imagem");
+
+const contador = document.getElementById("contador");
+
+const usuarioAtual = document.getElementById(
+    "usuarioAtual"
+);
+
+const btnSair = document.getElementById("btnSair");
+
+// ======================================
+// 3. VARIÁVEIS
+// ======================================
+
+let eventos = carregarEventos();
+
 let idEmEdicao = null;
 
-function carregar() {
+let imagemAtual = "";
+
+let processandoImagem = false;
+
+// ======================================
+// 4. CONTROLE DE ACESSO
+// ======================================
+
+if (!usuarioAutorizado) {
+    window.location.replace("login.html");
+} else {
+    iniciarGerenciamento();
+}
+
+function iniciarGerenciamento() {
+
+    if (usuarioAtual) {
+        
+       // Recuperar o nome salvo no login 
+        const nomeCompleto = (
+            sessionStorage.getItem("p2NomeUsuario") || ""
+        ).trim();
+            
+       // Pegar somente o primeiro nome
+       const primeiroNome = nomeCompleto
+        ? nomeCompleto.split(/\s+/)[0]
+        : "Usuario";
+        
+        // Identificar o perfil
+        const nomePerfil = usuarioAdministrador
+        ? "Administrador"
+        : "Empreendedor";
+
+        // Exibir a Saudação
+        usuarioAtual.textContent =
+        `Olá, ${primeiroNome}! | ${nomePerfil}`;
+    }
+
+    if (btnSair) {
+        btnSair.addEventListener("click", sair);
+    }
+
+    if (!form || !lista || !idCampo ||
+        !mensagem || !botaoSalvar ||
+        !contador) {
+
+        console.error(
+            "Elementos do cadastro de eventos não encontrados."
+        );
+
+        return;
+    }
+
+    configurarFormulario();
+
+    configurarImagem();
+
+    limparFormulario();
+
+    renderizar();
+}
+
+function sair() {
+    sessionStorage.removeItem("p2PerfilDemo");
+    sessionStorage.removeItem("p2EmailDemo");
+    sessionStorage.removeItem("p2NomeUsuario"); 
+
+    window.location.replace("login.html");
+}
+
+// ======================================
+// 5. CARREGAR EVENTOS
+// ======================================
+
+function carregarEventos() {
     try {
         const dados = JSON.parse(
             localStorage.getItem(CHAVE) || "[]"
         );
 
         return Array.isArray(dados) ? dados : [];
-    } catch {
+
+    } catch (erro) {
+        console.error(
+            "Erro ao carregar eventos:",
+            erro
+        );
+
         return [];
     }
 }
 
-// Salvar no navegador
-function persistir() {
+// ======================================
+// 6. SALVAR EVENTOS
+// ======================================
+
+function salvarDados() {
     try {
         localStorage.setItem(
             CHAVE,
             JSON.stringify(eventos)
         );
+
         return true;
-    } catch {
+
+    } catch (erro) {
+        console.error(
+            "Erro ao salvar eventos:",
+            erro
+        );
+
         mensagem.textContent =
-            "Não foi possível salvar neste navegador.";
+            "Não foi possível salvar. " +
+            "Verifique o espaço disponível no navegador.";
+
         return false;
     }
 }
 
-// Gerar o próximo ID
+// ======================================
+// 7. GERAR PRÓXIMO ID
+// ======================================
+
 function proximoId() {
-    return Math.max(
-        0,
-        ...eventos.map(evento => Number(evento.id) || 0)
-    ) + 1;
+    const ids = eventos.map(
+        evento => Number(evento.id) || 0
+    );
+
+    return Math.max(0, ...ids) + 1;
 }
 
-// Preparar formulário para novo cadastro
-function prepararNovo() {
-    form.reset();
-    idEmEdicao = null;
-    idCampo.value = proximoId();
-    botaoSalvar.textContent = "Cadastrar evento";
+// ======================================
+// 8. VERIFICAR PERMISSÕES
+// ======================================
+
+function podeGerenciarEvento(evento) {
+
+    // ADMINISTRADOR:
+    // Pode gerenciar todos os eventos.
+    if (usuarioAdministrador) {
+        return true;
+    }
+
+    // EMPREENDEDOR:
+    // Pode gerenciar apenas eventos próprios.
+    if (perfilLogado !== "empreendedor") {
+        return false;
+    }
+
+    // Eventos antigos sem responsável
+    // ficam sob gerenciamento do ADMIN.
+    if (!evento.criadoPor) {
+        return false;
+    }
+
+    return (
+        String(evento.criadoPor)
+            .trim()
+            .toLowerCase() === emailLogado
+    );
 }
 
-// Formatar data para o padrão brasileiro
+// ======================================
+// 9. EVENTOS VISÍVEIS NA TABELA
+// ======================================
+
+function obterEventosVisiveis() {
+
+    if (usuarioAdministrador) {
+        return eventos;
+    }
+
+    return eventos.filter(podeGerenciarEvento);
+}
+
+// ======================================
+// 10. FORMATAR DATA
+// ======================================
+
 function formatarData(data) {
-    const [ano, mes, dia] = data.split("-");
+
+    if (!data) {
+        return "Data não informada";
+    }
+
+    const partes = data.split("-");
+
+    if (partes.length !== 3) {
+        return data;
+    }
+
+    const [ano, mes, dia] = partes;
+
     return `${dia}/${mes}/${ano}`;
 }
 
-// Criar células da tabela com segurança
+// ======================================
+// 11. CRIAR CÉLULAS DA TABELA
+// ======================================
+
 function criarCelula(linha, valor) {
+
     const td = document.createElement("td");
-    td.textContent = valor;
+
+    td.textContent = valor ?? "";
+
     linha.appendChild(td);
+
     return td;
 }
 
-// Exibir eventos na tabela
-function renderizar() {
-    lista.replaceChildren();
+// ======================================
+// 12. MOSTRAR PRÉVIA DA IMAGEM
+// ======================================
 
-    document.querySelector("#contador").textContent =
-        `${eventos.length} evento(s)`;
+function mostrarPreview(imagem) {
 
-    if (eventos.length === 0) {
-        const linha = document.createElement("tr");
-        const td = criarCelula(
-            linha,
-            "Nenhum evento cadastrado."
-        );
-
-        td.colSpan = 6;
-        td.className = "vazio";
-        lista.appendChild(linha);
+    if (!preview) {
         return;
     }
 
-    eventos.forEach(evento => {
-        const linha = document.createElement("tr");
+    if (imagem) {
 
-        criarCelula(linha, evento.id);
-        criarCelula(linha, evento.nome);
-        criarCelula(linha, formatarData(evento.data));
-        criarCelula(linha, evento.local);
-        criarCelula(linha, evento.descricao);
+        preview.src = imagem;
 
-        const tdAcoes = document.createElement("td");
-        const acoes = document.createElement("div");
+        preview.hidden = false;
 
-        acoes.className = "acoes-tabela";
+    } else {
 
-        // Botão editar
-        const editar = document.createElement("button");
-        editar.type = "button";
-        editar.className = "editar";
-        editar.textContent = "Editar";
+        preview.removeAttribute("src");
 
-        editar.addEventListener("click", () => {
-            idEmEdicao = evento.id;
+        preview.hidden = true;
+    }
+}
 
-            idCampo.value = evento.id;
-            document.querySelector("#nome").value =
-                evento.nome;
-            document.querySelector("#data").value =
-                evento.data;
-            document.querySelector("#local").value =
-                evento.local;
-            document.querySelector("#descricao").value =
-                evento.descricao;
+// ======================================
+// 13. COMPACTAR IMAGEM
+// ======================================
 
-            botaoSalvar.textContent = "Salvar alterações";
+function compactarImagem(arquivo) {
 
-            mensagem.textContent =
-                `Editando evento ${evento.id}`;
+    return new Promise((resolve, reject) => {
 
-            form.scrollIntoView({
-                behavior: "smooth"
-            });
-        });
+        const leitor = new FileReader();
 
-        // Botão excluir
-        const excluir = document.createElement("button");
-        excluir.type = "button";
-        excluir.className = "excluir";
-        excluir.textContent = "Excluir";
-
-        excluir.addEventListener("click", () => {
-            const confirmar = confirm(
-                `Excluir o evento "${evento.nome}"?`
+        leitor.onerror = () => {
+            reject(
+                new Error("Erro ao ler a imagem.")
             );
+        };
 
-            if (!confirmar) return;
+        leitor.onload = () => {
 
-            const anteriores = eventos.slice();
+            const imagem = new Image();
 
-            eventos = eventos.filter(
-                item => item.id !== evento.id
-            );
+            imagem.onerror = () => {
+                reject(
+                    new Error("Imagem inválida.")
+                );
+            };
 
-            if (!persistir()) {
-                eventos = anteriores;
-                return;
-            }
+            imagem.onload = () => {
 
-            if (idEmEdicao === evento.id) {
-                prepararNovo();
-            } else if (idEmEdicao === null) {
-                idCampo.value = proximoId();
-            }
+                const limite = 900;
 
-            renderizar();
-            mensagem.textContent = "Evento excluído.";
-        });
+                const escala = Math.min(
+                    1,
+                    limite / imagem.width,
+                    limite / imagem.height
+                );
 
-        acoes.append(editar, excluir);
-        tdAcoes.appendChild(acoes);
-        linha.appendChild(tdAcoes);
-        lista.appendChild(linha);
+                const canvas = document.createElement(
+                    "canvas"
+                );
+
+                canvas.width = Math.max(
+                    1,
+                    Math.round(imagem.width * escala)
+                );
+
+                canvas.height = Math.max(
+                    1,
+                    Math.round(imagem.height * escala)
+                );
+
+                const ctx = canvas.getContext("2d");
+
+                if (!ctx) {
+                    reject(
+                        new Error("Erro ao processar imagem.")
+                    );
+                    return;
+                }
+
+                ctx.drawImage(
+                    imagem,
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                );
+
+                const imagemCompactada =
+                    canvas.toDataURL(
+                        "image/jpeg",
+                        0.7
+                    );
+
+                resolve(imagemCompactada);
+            };
+
+            imagem.src = leitor.result;
+        };
+
+        leitor.readAsDataURL(arquivo);
     });
 }
 
-// Cadastrar ou atualizar evento
-form.addEventListener("submit", function(event) {
-    event.preventDefault();
+// ======================================
+// 14. CONFIGURAR CAMPO DE IMAGEM
+// ======================================
 
-    if (!form.reportValidity()) return;
+function configurarImagem() {
 
-    const evento = {
-        id: idEmEdicao ?? proximoId(),
-        nome: document.querySelector("#nome").value.trim(),
-        data: document.querySelector("#data").value,
-        local: document.querySelector("#local").value.trim(),
-        descricao: document.querySelector("#descricao")
-            .value.trim()
-    };
+    if (!campoImagem) {
+        return;
+    }
 
-    if (
-        !evento.nome ||
-        !evento.data ||
-        !evento.local ||
-        !evento.descricao
-    ) {
+    campoImagem.addEventListener(
+        "change",
+        async function() {
+
+            const arquivo = campoImagem.files[0];
+
+            if (!arquivo) {
+                return;
+            }
+
+            const tiposPermitidos = [
+                "image/jpeg",
+                "image/png",
+                "image/webp"
+            ];
+
+            if (!tiposPermitidos.includes(arquivo.type)) {
+
+                mensagem.textContent =
+                    "Selecione uma imagem JPG, PNG ou WebP.";
+
+                campoImagem.value = "";
+
+                return;
+            }
+
+            if (arquivo.size > 2 * 1024 * 1024) {
+
+                mensagem.textContent =
+                    "A imagem deve ter no máximo 2 MB.";
+
+                campoImagem.value = "";
+
+                return;
+            }
+
+            processandoImagem = true;
+            botaoSalvar.disabled = true;
+
+            try {
+
+                imagemAtual = await compactarImagem(
+                    arquivo
+                );
+
+                mostrarPreview(imagemAtual);
+
+                mensagem.textContent =
+                    "Imagem carregada com sucesso!";
+
+            } catch (erro) {
+
+                console.error(erro);
+
+                mensagem.textContent =
+                    "Não foi possível processar a imagem.";
+
+                campoImagem.value = "";
+
+            } finally {
+
+                processandoImagem = false;
+                botaoSalvar.disabled = false;
+            }
+        }
+    );
+}
+
+// ======================================
+// 15. LIMPAR FORMULÁRIO
+// ======================================
+
+function limparFormulario() {
+
+    form.reset();
+
+    idEmEdicao = null;
+
+    imagemAtual = "";
+
+    processandoImagem = false;
+
+    mostrarPreview("");
+
+    idCampo.value = proximoId();
+
+    botaoSalvar.textContent = "Cadastrar evento";
+}
+
+// ======================================
+// 16. RENDERIZAR TABELA
+// ======================================
+
+function renderizar() {
+
+    lista.replaceChildren();
+
+    const eventosVisiveis = obterEventosVisiveis();
+
+    contador.textContent =
+        `${eventosVisiveis.length} evento(s)`;
+
+    if (eventosVisiveis.length === 0) {
+
+        const tr = document.createElement("tr");
+
+        const td = criarCelula(
+            tr,
+            "Nenhum evento disponível para esta conta."
+        );
+
+        td.colSpan = 6;
+
+        td.className = "vazio";
+
+        lista.appendChild(tr);
+
+        return;
+    }
+
+    eventosVisiveis.forEach(evento => {
+
+        const tr = document.createElement("tr");
+
+        criarCelula(tr, evento.id);
+
+        criarCelula(tr, evento.nome);
+
+        criarCelula(
+            tr,
+            formatarData(evento.data)
+        );
+
+        criarCelula(tr, evento.local);
+
+        criarCelula(tr, evento.descricao);
+
+        const acoes = document.createElement("td");
+
+        // BOTÃO EDITAR
+
+        const editar = document.createElement("button");
+
+        editar.type = "button";
+
+        editar.className = "editar";
+
+        editar.textContent = "Editar";
+
+        editar.addEventListener("click", () => {
+
+            editarEvento(evento.id);
+
+        });
+
+        // BOTÃO EXCLUIR
+
+        const excluir = document.createElement("button");
+
+        excluir.type = "button";
+
+        excluir.className = "excluir";
+
+        excluir.textContent = "Excluir";
+
+        excluir.addEventListener("click", () => {
+
+            excluirEvento(evento.id);
+
+        });
+
+        acoes.appendChild(editar);
+
+        acoes.appendChild(excluir);
+
+        tr.appendChild(acoes);
+
+        lista.appendChild(tr);
+    });
+}
+
+// ======================================
+// 17. EDITAR EVENTO
+// ======================================
+
+function editarEvento(id) {
+
+    const evento = eventos.find(
+        e => String(e.id) === String(id)
+    );
+
+    if (!evento) {
         mensagem.textContent =
-            "Preencha todos os campos obrigatórios.";
+            "Evento não encontrado.";
+        return;
+    }
+
+    if (!podeGerenciarEvento(evento)) {
+
+        mensagem.textContent =
+            "Você não tem permissão para editar este evento.";
+
+        return;
+    }
+
+    idEmEdicao = evento.id;
+
+    idCampo.value = evento.id;
+
+    document.getElementById("nome").value =
+        evento.nome;
+
+    document.getElementById("data").value =
+        evento.data;
+
+    document.getElementById("local").value =
+        evento.local;
+
+    document.getElementById("descricao").value =
+        evento.descricao;
+
+    imagemAtual = evento.imagem || "";
+
+    if (campoImagem) {
+        campoImagem.value = "";
+    }
+
+    mostrarPreview(imagemAtual);
+
+    botaoSalvar.textContent =
+        "Salvar alterações";
+
+    mensagem.textContent =
+        `Editando evento ${evento.id}`;
+
+    form.scrollIntoView({
+        behavior: "smooth"
+    });
+}
+
+// ======================================
+// 18. EXCLUIR EVENTO
+// ======================================
+
+function excluirEvento(id) {
+
+    const evento = eventos.find(
+        e => String(e.id) === String(id)
+    );
+
+    if (!evento) {
+
+        mensagem.textContent =
+            "Evento não encontrado.";
+
+        return;
+    }
+
+    if (!podeGerenciarEvento(evento)) {
+
+        mensagem.textContent =
+            "Você não tem permissão para excluir este evento.";
+
+        return;
+    }
+
+    const confirmar = window.confirm(
+        `Deseja realmente excluir "${evento.nome}"?`
+    );
+
+    if (!confirmar) {
         return;
     }
 
     const anteriores = eventos.slice();
 
-    if (idEmEdicao !== null) {
-        eventos = eventos.map(item =>
-            item.id === idEmEdicao ? evento : item
-        );
-    } else {
-        eventos.push(evento);
-    }
+    eventos = eventos.filter(
+        e => String(e.id) !== String(id)
+    );
 
-    if (!persistir()) {
+    if (!salvarDados()) {
+
         eventos = anteriores;
+
         return;
     }
 
-    const texto = idEmEdicao !== null
-        ? "Evento atualizado com sucesso!"
-        : "Evento cadastrado com sucesso!";
+    if (String(idEmEdicao) === String(id)) {
+        limparFormulario();
+    }
 
-    prepararNovo();
     renderizar();
 
-    mensagem.textContent = texto;
-});
+    idCampo.value = proximoId();
 
-// Limpar formulário
-document.querySelector("#limpar")
-    .addEventListener("click", () => {
-        prepararNovo();
-        mensagem.textContent = "Campos limpos.";
-    });
-
-// Inicialização
-prepararNovo();
-renderizar();
-
-
-// IDENTIFICAÇÃO DO LOGIN DE DEMONSTRAÇÃO
-
-const perfilDemo = sessionStorage.getItem(
-    "p2PerfilDemo"
-);
-
-const emailDemo = sessionStorage.getItem(
-    "p2EmailDemo"
-);
-
-if (
-    !["admin", "empreendedor"].includes(perfilDemo) ||
-    !emailDemo
-) {
-    window.location.replace("login.html");
-} else {
-
-    const nomePerfil = perfilDemo === "admin"
-        ? "Administrador"
-        : "Empreendedor";
-
-    document.getElementById(
-        "usuarioAtual"
-    ).textContent =
-        `${nomePerfil} | ${emailDemo}`;
+    mensagem.textContent =
+        "Evento excluído com sucesso!";
 }
 
-// BOTÃO SAIR
+// ======================================
+// 19. CONFIGURAR FORMULÁRIO
+// ======================================
 
-document.getElementById("btnSair")
-    .addEventListener("click", function() {
+function configurarFormulario() {
 
-        sessionStorage.removeItem("p2PerfilDemo");
-        sessionStorage.removeItem("p2EmailDemo");
+    form.addEventListener(
+        "submit",
+        function(event) {
 
-        window.location.replace("login.html");
-    });
+            event.preventDefault();
+
+            salvarEvento();
+        }
+    );
+
+    const botaoLimpar = document.getElementById(
+        "limpar"
+    );
+
+    if (botaoLimpar) {
+
+        botaoLimpar.addEventListener(
+            "click",
+            function() {
+
+                limparFormulario();
+
+                mensagem.textContent =
+                    "Campos limpos.";
+            }
+        );
+    }
+}
+
+// ======================================
+// 20. CADASTRAR OU ATUALIZAR EVENTO
+// ======================================
+
+function salvarEvento() {
+
+    if (!usuarioAutorizado) {
+
+        mensagem.textContent =
+            "Faça login para cadastrar eventos.";
+
+        return;
+    }
+
+    if (processandoImagem) {
+
+        mensagem.textContent =
+            "Aguarde o processamento da imagem.";
+
+        return;
+    }
+
+    if (!form.reportValidity()) {
+        return;
+    }
+
+    const eventoAnterior = idEmEdicao !== null
+        ? eventos.find(
+            e => String(e.id) === String(idEmEdicao)
+        )
+        : null;
+
+    if (idEmEdicao !== null && !eventoAnterior) {
+
+        mensagem.textContent =
+            "O evento que você está editando não foi encontrado.";
+
+        return;
+    }
+
+    if (
+        eventoAnterior &&
+        !podeGerenciarEvento(eventoAnterior)
+    ) {
+
+        mensagem.textContent =
+            "Você não tem permissão para alterar este evento.";
+
+        return;
+    }
+
+    const nome = document.getElementById("nome")
+        .value.trim();
+
+    const data = document.getElementById("data")
+        .value;
+
+    const local = document.getElementById("local")
+        .value.trim();
+
+    const descricao = document.getElementById(
+        "descricao"
+    ).value.trim();
+
+    if (!nome || !data || !local || !descricao) {
+
+        mensagem.textContent =
+            "Preencha todos os campos obrigatórios.";
+
+        return;
+    }
+
+    const editando = eventoAnterior !== null;
+
+    const evento = {
+
+        id: editando
+            ? eventoAnterior.id
+            : proximoId(),
+
+        nome: nome,
+
+        data: data,
+
+        local: local,
+
+        descricao: descricao,
+
+        imagem: imagemAtual,
+
+        // Mantém o responsável original
+        criadoPor: editando
+            ? (eventoAnterior.criadoPor || null)
+            : emailLogado
+    };
+
+    const anteriores = eventos.slice();
+
+    if (editando) {
+
+        eventos = eventos.map(e => {
+
+            if (
+                String(e.id) ===
+                String(eventoAnterior.id)
+            ) {
+                return evento;
+            }
+
+            return e;
+        });
+
+    } else {
+
+        eventos.push(evento);
+    }
+
+    if (!salvarDados()) {
+
+        eventos = anteriores;
+
+        return;
+    }
+
+    limparFormulario();
+
+    renderizar();
+
+    mensagem.textContent = editando
+        ? "Evento atualizado com sucesso!"
+        : "Evento cadastrado com sucesso!";
+}

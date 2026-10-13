@@ -58,6 +58,20 @@ function mostrarEventos() {
         card.className = "card-evento";
         card.id = `evento-${evento.id}`;
 
+        
+      // IMAGEM DO EVENTO
+        if (evento.imagem) {
+          const imagem = document.createElement("img");
+
+            imagem.src = evento.imagem;
+            imagem.alt = `Imagem do evento ${evento.nome}`;
+            imagem.className = "imagem-evento";
+            imagem.loading = "lazy";
+
+            card.appendChild(imagem);
+        }
+
+
         adicionarTexto(card, "h3", evento.nome);
 
         adicionarTexto(

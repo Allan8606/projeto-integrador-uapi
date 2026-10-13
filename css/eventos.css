@@ -160,6 +160,30 @@ textarea {
     resize: vertical;
 }
 
+
+/* IMAGEM DO EVENTO */
+
+#imagem {
+    background: #f8fafc;
+    border: 2px dashed #b9c9df;
+    padding: 16px;
+    cursor: pointer;
+}
+
+#preview-imagem {
+    width: 100%;
+    max-width: 360px;
+    height: 220px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid #dfe6ef;
+    margin-top: 12px;
+}
+
+#preview-imagem[hidden] {
+    display: none;
+}
+
 /* BOTÕES */
 
 .acoes {

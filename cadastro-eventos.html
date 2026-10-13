@@ -18,17 +18,14 @@
     <header class="header">
 
         <a href="index.html" class="logo">
-            <img src="img/logo.webp"
-                 alt="Logo P2 Conecta">
+            <img src="img/logo.webp" alt="Logo P2 Conecta">
         </a>
 
         <nav class="menu">
             <a href="index.html">Início</a>
             <a href="index.html#eventos">Eventos</a>
             <a href="index.html#pontos">Pontos turísticos</a>
-            <a href="index.html#empreendimentos">
-                Empreendimentos
-            </a>
+            <a href="index.html#empreendimentos">Empreendimentos</a>
             <a href="login.html">Login</a>
         </nav>
 
@@ -123,13 +120,42 @@
                         </label>
 
                         <textarea id="descricao"
-                                  rows="5"
-                                  maxlength="1000"
-                                  placeholder="Descreva o evento..."
-                                  required></textarea>
+                            rows="5"
+                            maxlength="1000"
+                            placeholder="Descreva o evento..."
+                            required>
+                        </textarea>
                     </div>
 
+
+                   
+                    <!-- IMAGEM DO EVENTO -->
+                    <div class="campo largura-total">
+                        <label for="imagem">
+                            Imagem do Evento
+                        </label>
+
+                        <input
+                            type="file"
+                            id="imagem"
+                            accept="image/jpeg,image/png,image/webp"
+                        >
+
+                        <small>
+                            Selecione uma imagem JPG, PNG ou WebP.
+                            Tamanho máximo: 2 MB.
+                        </small>
+
+                        <img
+                            id="preview-imagem"
+                            alt="Prévia da imagem do evento"
+                            hidden
+                        >
+                    </div>
+
+
                 </div>
+                
 
                 <!-- BOTÕES -->
                 <div class="acoes">

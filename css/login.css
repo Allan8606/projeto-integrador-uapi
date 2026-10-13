@@ -210,6 +210,25 @@ button:hover {
 }
 
 
+/* LINK PARA CADASTRO */
+
+.cadastro-link {
+    text-align: center;
+    margin: 20px 0;
+    font-size: 14px;
+}
+
+.cadastro-link a {
+    color: #3158d9;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.cadastro-link a:hover {
+    text-decoration: underline;
+}
+
+
 /* =====================================
    RESPONSIVIDADE
 ===================================== */

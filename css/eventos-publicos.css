@@ -96,6 +96,27 @@ main {
     border: 2px solid #2e9b4d;
 }
 
+
+/* IMAGENS DOS CARDS DE EVENTOS */
+
+.imagem-evento {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    display: block;
+}
+
+.card-evento {
+    overflow: hidden;
+}
+
+.card-evento:hover {
+    transform: translateY(-4px);
+    transition: transform 0.2s ease;
+}
+
 footer {
     text-align: center;
     padding: 25px;
