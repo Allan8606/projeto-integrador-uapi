@@ -1,5 +1,5 @@
 
-/* CONFIGURAÇÕES GERAIS */
+
 
 :root {
     --azul: #3158d9;
@@ -21,7 +21,7 @@ body {
     color: var(--texto);
 }
 
-/* CABEÇALHO */
+
 
 .header {
     max-width: 1120px;
@@ -35,7 +35,7 @@ body {
     border-bottom: 1px solid var(--borda);
 }
 
-/* LOGOMARCA ORIGINAL */
+
 
 .logo img {
     height: 75px;
@@ -43,7 +43,7 @@ body {
     object-fit: contain;
 }
 
-/* MENU */
+
 
 .menu {
     display: flex;
@@ -61,7 +61,7 @@ body {
     color: var(--verde);
 }
 
-/* CONTEÚDO */
+
 
 main {
     max-width: 1120px;
@@ -93,7 +93,7 @@ h1 span {
     color: var(--cinza);
 }
 
-/* PAINEL */
+
 
 .painel {
     background: white;
@@ -109,7 +109,7 @@ h1 span {
     margin: 0 0 23px;
 }
 
-/* FORMULÁRIO */
+
 
 .campos {
     display: grid;
@@ -161,7 +161,7 @@ textarea {
 }
 
 
-/* IMAGEM DO EVENTO */
+
 
 #imagem {
     background: #f8fafc;
@@ -184,7 +184,7 @@ textarea {
     display: none;
 }
 
-/* BOTÕES */
+
 
 .acoes {
     display: flex;
@@ -226,7 +226,7 @@ button {
     font-weight: bold;
 }
 
-/* TABELA DE EVENTOS */
+
 
 .cabecalho-lista {
     display: flex;
@@ -292,7 +292,7 @@ td:nth-child(5) {
     color: var(--cinza);
 }
 
-/* RODAPÉ */
+
 
 footer {
     text-align: center;
@@ -300,7 +300,7 @@ footer {
     color: var(--cinza);
 }
 
-/* RESPONSIVIDADE */
+
 
 @media (max-width: 700px) {
 
@@ -327,7 +327,7 @@ footer {
 }
 
 
-/* USUÁRIO LOGADO */
+
 
 .usuario-logado {
     display: flex;

@@ -4,6 +4,7 @@
 const lista = document.getElementById("lista-eventos");
 const CHAVE_EVENTOS = "p2-conecta-eventos-v1";
 
+// Recupera os eventos cadastrados no navegador.
 function carregarEventos() {
     try {
         const dados = JSON.parse(
@@ -16,6 +17,7 @@ function carregarEventos() {
     }
 }
 
+// Converte a data para o formato usado na página.
 function formatarData(data) {
     const partes = data.split("-");
 
@@ -24,6 +26,7 @@ function formatarData(data) {
     return `${partes[2]}/${partes[1]}/${partes[0]}`;
 }
 
+// Cria um elemento de texto e o adiciona ao destino.
 function adicionarTexto(elemento, tag, texto) {
     const filho = document.createElement(tag);
     filho.textContent = texto;
@@ -31,6 +34,7 @@ function adicionarTexto(elemento, tag, texto) {
     return filho;
 }
 
+// Exibe os eventos em ordem de data e destaca o selecionado.
 function mostrarEventos() {
     const eventos = carregarEventos();
 
@@ -113,8 +117,10 @@ function mostrarEventos() {
     }
 }
 
+// Carrega os eventos ao abrir a página.
 mostrarEventos();
 
+// Atualiza a lista quando outra aba altera os eventos.
 window.addEventListener("storage", function(evento) {
     if (evento.key === CHAVE_EVENTOS) {
         mostrarEventos();

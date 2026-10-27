@@ -1,6 +1,6 @@
-/* ==============================
-   VARIÁVEIS E CONFIGURAÇÕES GERAIS
-================================= */
+
+
+
 
 :root {
     --primary-color: #3158d9;
@@ -47,9 +47,9 @@ main {
     flex: 1;
 }
 
-/* ==============================
-   CABEÇALHO
-================================= */
+
+
+
 
 .header {
     display: flex;
@@ -59,9 +59,9 @@ main {
     border-bottom: 1px solid #eee;
 }
 
-/* ==============================
-   LOGO
-================================= */
+
+
+
 
 .logo img {
     height: 75px;
@@ -69,9 +69,9 @@ main {
     display: block;
 }
 
-/* ==============================
-   MENU
-================================= */
+
+
+
 
 .menu {
     display: flex;
@@ -97,9 +97,9 @@ main {
     color: var(--accent-color);
 }
 
-/* ==============================
-   HERO
-================================= */
+
+
+
 
 .hero {
     max-width: 850px;
@@ -125,9 +125,9 @@ main {
     color: var(--text-muted);
 }
 
-/* ==============================
-   CARDS
-================================= */
+
+
+
 
 .cards {
     display: grid;
@@ -137,9 +137,9 @@ main {
     margin: 0 auto 30px;
 }
 
-/* ==============================
-   CARD
-================================= */
+
+
+
 
 .card {
     background-color: var(--bg-card);
@@ -156,9 +156,9 @@ main {
     border-color: #eaeaea;
 }
 
-/* ==============================
-   IMAGEM DO CARD
-================================= */
+
+
+
 
 .imagem-card {
     width: 100%;
@@ -177,9 +177,9 @@ main {
     display: block;
 }
 
-/* ==============================
-   CONTEÚDO DOS CARDS
-================================= */
+
+
+
 
 .conteudo-card {
     padding: 12px 4px 4px;
@@ -197,9 +197,9 @@ main {
     color: var(--text-muted);
 }
 
-/* ==============================
-   RODAPÉ
-================================= */
+
+
+
 
 .footer {
     margin-top: auto;
@@ -210,9 +210,9 @@ main {
     font-size: 13px;
 }
 
-/* ==============================
-   RESPONSIVIDADE
-================================= */
+
+
+
 
 @media (max-width: 900px) {
     body {
@@ -281,7 +281,7 @@ main {
 }
 
 
-/* EVENTOS CADASTRADOS */
+
 
 #eventos-dinamicos {
     display: grid;

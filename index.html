@@ -11,7 +11,7 @@
 
 <body data-grupo="raiz">
 
-    <!-- CABEÇALHO -->
+
     <header class="header">
         <div class="logo">
             <img src="img/logo.webp" alt="Logo P2 Conecta">
@@ -23,7 +23,7 @@
         </nav>
     </header>
 
-    <!-- CONTEÚDO PRINCIPAL -->
+
     <main>
 
         <section class="hero">
@@ -38,10 +38,10 @@
             </p>
         </section>
 
-        <!-- CARDS -->
+
         <section class="cards">
 
-            <!-- EVENTOS -->
+
             <article class="card" id="eventos">
                 <div class="imagem-card">
                     <img src="img/festival de inverno.webp" alt="Festival de Inverno em Pedro II" loading="lazy">
@@ -55,7 +55,7 @@
                 </div>
             </article>
 
-            <!-- PONTOS TURÍSTICOS -->
+
             <article class="card" id="pontos" role="link" tabindex="0" aria-label="Ver pontos turísticos de Pedro II">
                 <div class="imagem-card">
                     <img src="img/gritador.webp" alt="Mirante do Gritador em Pedro II" loading="lazy">
@@ -69,7 +69,7 @@
                 </div>
             </article>
 
-            <!-- EMPREENDIMENTOS -->
+
             <article class="card" id="empreendimentos" role="link" tabindex="0" aria-label="Ver empreendimentos de Pedro II">
                 <div class="imagem-card">
                     <img src="img/empreendimento.webp" alt="Empreendimentos em Pedro II" loading="lazy">
@@ -87,66 +87,66 @@
 
     </main>
 
-    <!-- RODAPÉ -->
+
     <footer class="footer">
         <p>&copy; P2 Conecta — Todos os direitos reservados.</p>
     </footer>
 
     <script src="script.js"></script>
-    
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    const cardPontos = document.getElementById("pontos");
 
-    if (cardPontos) {
-        cardPontos.style.cursor = "pointer";
-        cardPontos.addEventListener("click", function() {
-            window.location.href = "pages/pontos-turisticos.html";
-        });
-        cardPontos.addEventListener("keydown", function(event) {
-            if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                window.location.href = "pages/pontos-turisticos.html";
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const cardPontos = document.getElementById("pontos");
+
+            if (cardPontos) {
+                cardPontos.style.cursor = "pointer";
+                cardPontos.addEventListener("click", function() {
+                    window.location.href = "pages/pontos-turisticos.html";
+                });
+                cardPontos.addEventListener("keydown", function(event) {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        window.location.href = "pages/pontos-turisticos.html";
+                    }
+                });
             }
-        });
-    }
 
-    const cardEmpreendimentos = document.getElementById("empreendimentos");
-    if (cardEmpreendimentos) {
-        cardEmpreendimentos.style.cursor = "pointer";
-        cardEmpreendimentos.addEventListener("click", function() {
-            window.location.href = "pages/empreendimentos.html";
-        });
-        cardEmpreendimentos.addEventListener("keydown", function(event) {
-            if (event.key === "Enter" || event.key === " ") {
-                event.preventDefault();
-                window.location.href = "pages/empreendimentos.html";
+            const cardEmpreendimentos = document.getElementById("empreendimentos");
+            if (cardEmpreendimentos) {
+                cardEmpreendimentos.style.cursor = "pointer";
+                cardEmpreendimentos.addEventListener("click", function() {
+                    window.location.href = "pages/empreendimentos.html";
+                });
+                cardEmpreendimentos.addEventListener("keydown", function(event) {
+                    if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        window.location.href = "pages/empreendimentos.html";
+                    }
+                });
             }
+
+            const cardEventos = document.getElementById("eventos");
+
+            if (!cardEventos) return;
+
+            cardEventos.style.cursor = "pointer";
+            cardEventos.setAttribute("role", "link");
+            cardEventos.setAttribute("tabindex", "0");
+
+            function abrirEventos() {
+                window.location.href = "pages/eventos.html";
+            }
+
+            cardEventos.addEventListener("click", abrirEventos);
+
+            cardEventos.addEventListener("keydown", function(event) {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    abrirEventos();
+                }
+            });
         });
-    }
-
-    const cardEventos = document.getElementById("eventos");
-
-    if (!cardEventos) return;
-
-    cardEventos.style.cursor = "pointer";
-    cardEventos.setAttribute("role", "link");
-    cardEventos.setAttribute("tabindex", "0");
-
-    function abrirEventos() {
-        window.location.href = "pages/eventos.html";
-    }
-
-    cardEventos.addEventListener("click", abrirEventos);
-
-    cardEventos.addEventListener("keydown", function(event) {
-        if (event.key === "Enter" || event.key === " ") {
-            event.preventDefault();
-            abrirEventos();
-        }
-    });
-});
-</script>
+    </script>
 
 </body>
 

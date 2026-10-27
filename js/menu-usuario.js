@@ -6,6 +6,7 @@ const perfilUsuario = localStorage.getItem("p2PerfilDemo");
 const emailUsuario = localStorage.getItem("p2EmailDemo");
 const usuarioAutenticado = ["admin", "empreendedor"].includes(perfilUsuario) && Boolean(emailUsuario);
 
+// Mostra as opções de gerenciamento para usuários autenticados.
 if (menuUsuario && usuarioAutenticado) {
     const caminhos = {
         raiz: {
@@ -57,6 +58,7 @@ if (menuUsuario && usuarioAutenticado) {
     menuUsuario.appendChild(sair);
 }
 
+// Cria um link do menu com destino, texto e classe opcionais.
 function criarLink(destino, rotulo, classe = "") {
     const link = document.createElement("a");
     link.href = destino;

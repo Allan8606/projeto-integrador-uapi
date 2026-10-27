@@ -1,5 +1,6 @@
 "use strict";
 
+// Identifica o conteúdo e a conta que podem ser gerenciados.
 const tipo = document.body.dataset.tipo;
 const chave = `p2-conecta-${tipo}-v1`;
 const singular = tipo === "empreendimentos" ? "empreendimento" : "ponto turístico";
@@ -20,6 +21,7 @@ let itens = carregar();
 let editandoId = null;
 let imagemAtual = "";
 
+// Bloqueia o acesso de quem não está autenticado ou não tem permissão.
 if (!autorizado) {
     window.location.replace("../../pages/login.html");
 } else if (tipo === "pontos-turisticos" && !admin) {
@@ -33,6 +35,7 @@ if (!autorizado) {
     iniciar();
 }
 
+// Recupera os registros salvos no navegador.
 function carregar() {
     try {
         const dados = JSON.parse(localStorage.getItem(chave) || "[]");
@@ -42,6 +45,7 @@ function carregar() {
     }
 }
 
+// Conecta os campos do formulário aos recursos da página.
 function iniciar() {
     form.addEventListener("submit", salvar);
     document.getElementById("limpar").addEventListener("click", () => {
@@ -53,11 +57,13 @@ function iniciar() {
     renderizar();
 }
 
+// Verifica se o usuário pode alterar este registro.
 function podeGerenciar(item) {
     return admin || (perfil === "empreendedor" && item.criadoPor &&
         String(item.criadoPor).trim().toLowerCase() === email);
 }
 
+// Salva os registros e informa se houve falha.
 function salvarDados() {
     try {
         localStorage.setItem(chave, JSON.stringify(itens));
@@ -68,10 +74,12 @@ function salvarDados() {
     }
 }
 
+// Calcula o próximo identificador disponível.
 function proximoId() {
     return Math.max(0, ...itens.map(item => Number(item.id) || 0)) + 1;
 }
 
+// Limpa o formulário e prepara um novo cadastro.
 function limpar() {
     form.reset();
     editandoId = null;
@@ -83,6 +91,7 @@ function limpar() {
     botaoSalvar.textContent = `Cadastrar ${singular}`;
 }
 
+// Cria uma célula da tabela com o valor informado.
 function celula(linha, valor) {
     const td = document.createElement("td");
     td.textContent = valor || "—";
@@ -90,6 +99,7 @@ function celula(linha, valor) {
     return td;
 }
 
+// Atualiza a tabela com os registros permitidos para o usuário.
 function renderizar() {
     lista.replaceChildren();
     const visiveis = admin ? itens : itens.filter(podeGerenciar);
@@ -129,6 +139,7 @@ function renderizar() {
     });
 }
 
+// Carrega um registro escolhido no formulário.
 function editarItem(id) {
     const item = itens.find(registro => String(registro.id) === String(id));
     if (!item || !podeGerenciar(item)) return;
@@ -155,6 +166,7 @@ function editarItem(id) {
     form.scrollIntoView({ behavior: "smooth" });
 }
 
+// Remove um registro após confirmar a ação.
 function excluirItem(id) {
     const item = itens.find(registro => String(registro.id) === String(id));
     if (!item || !podeGerenciar(item)) return;
@@ -170,6 +182,7 @@ function excluirItem(id) {
     mensagem.textContent = `${singular[0].toUpperCase()}${singular.slice(1)} excluído com sucesso.`;
 }
 
+// Valida, reduz e mostra a imagem selecionada.
 async function selecionarImagem() {
     const arquivo = campoImagem.files[0];
     if (!arquivo) return;
@@ -208,6 +221,7 @@ async function selecionarImagem() {
     }
 }
 
+// Valida o formulário e cria ou atualiza um registro.
 function salvar(evento) {
     evento.preventDefault();
     if (!form.reportValidity()) return;

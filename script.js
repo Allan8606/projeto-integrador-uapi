@@ -1,6 +1,4 @@
-// ========================================
-// P2 CONECTA - JavaScript Principal
-// ========================================
+
 
 // Aguarda o carregamento completo do HTML
 document.addEventListener("DOMContentLoaded", () => {

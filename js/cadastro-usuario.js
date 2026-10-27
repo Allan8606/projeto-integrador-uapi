@@ -6,6 +6,7 @@ const CHAVE_USUARIOS = "p2-usuarios-demo-v1";
 const formulario = document.getElementById("formCadastro");
 const mensagem = document.getElementById("mensagemCadastro");
 
+// Recupera as contas já salvas no navegador.
 function carregarUsuarios() {
     try {
         const dados = JSON.parse(
@@ -17,6 +18,7 @@ function carregarUsuarios() {
     }
 }
 
+// Protege a senha usando um resumo criptográfico e um salt.
 async function gerarHash(senha, salt) {
     const texto = new TextEncoder().encode(salt + senha);
 
@@ -30,6 +32,7 @@ async function gerarHash(senha, salt) {
         .join("");
 }
 
+// Valida os dados e cria uma nova conta de empreendedor.
 formulario.addEventListener("submit", async function(event) {
     event.preventDefault();
 

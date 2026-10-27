@@ -5,6 +5,7 @@ const armazenamentoConteudo = `p2-conecta-${tipoConteudo}-v1`;
 const listaConteudo = document.getElementById("lista-conteudos");
 const termoConteudo = tipoConteudo === "empreendimentos" ? "empreendimento" : "ponto turístico";
 
+// Exibe na página os conteúdos salvos no navegador.
 function mostrarConteudos() {
     let itens = [];
     try {
@@ -45,13 +46,16 @@ function mostrarConteudos() {
     });
 }
 
+// Adiciona um parágrafo ao cartão de conteúdo.
 function adicionarParagrafo(cartao, texto) {
     const paragrafo = document.createElement("p");
     paragrafo.textContent = texto;
     cartao.appendChild(paragrafo);
 }
 
+// Carrega os conteúdos na abertura da página.
 mostrarConteudos();
+// Atualiza a lista quando outra aba altera os dados.
 window.addEventListener("storage", evento => {
     if (evento.key === armazenamentoConteudo) mostrarConteudos();
 });
