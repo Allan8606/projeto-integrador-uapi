@@ -94,7 +94,7 @@ formulario.addEventListener("submit", async function(event) {
         mensagem.textContent =
             "Conta criada! Redirecionando para o login...";
 
-        window.location.href = "login.html?cadastro=sucesso";
+        window.location.href = "../../pages/login.html?cadastro=sucesso";
 
     } catch (erro) {
         mensagem.textContent =

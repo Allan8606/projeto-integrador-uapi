@@ -321,8 +321,8 @@ renderizar();
 
 // LOGIN 
 
-const perfil = sessionStorage.getItem("p2PerfilDemo");
-const email = sessionStorage.getItem("p2EmailDemo");
+const perfil = localStorage.getItem("p2PerfilDemo");
+const email = localStorage.getItem("p2EmailDemo");
 
 if (!["admin", "empreendedor"].includes(perfil) || !email) {
     window.location.replace("login.html");
@@ -337,7 +337,7 @@ if (!["admin", "empreendedor"].includes(perfil) || !email) {
 
 document.getElementById("btnSair")
     .addEventListener("click", () => {
-        sessionStorage.removeItem("p2PerfilDemo");
-        sessionStorage.removeItem("p2EmailDemo");
+        localStorage.removeItem("p2PerfilDemo");
+        localStorage.removeItem("p2EmailDemo");
         window.location.replace("login.html");
     });

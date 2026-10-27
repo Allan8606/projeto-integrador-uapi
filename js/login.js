@@ -54,11 +54,11 @@ if (parametros.get("cadastro") === "sucesso") {
 
 // Iniciar sessão 
 function iniciarSessao(perfil, email, nome = "") {
-    sessionStorage.setItem("p2PerfilDemo", perfil);
-    sessionStorage.setItem("p2EmailDemo", email);
-    sessionStorage.setItem("p2NomeUsuario", nome);  
+    localStorage.setItem("p2PerfilDemo", perfil);
+    localStorage.setItem("p2EmailDemo", email);
+    localStorage.setItem("p2NomeUsuario", nome);  
 
-    window.location.href = "cadastro-eventos.html";
+    window.location.href = "../index.html";
 }
 
 // Evento de login

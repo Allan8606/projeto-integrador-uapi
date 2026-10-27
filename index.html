@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>P2 Conecta - Descubra Pedro II</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <script src="js/menu-usuario.js" defer></script>
 </head>
 
-<body>
+<body data-grupo="raiz">
 
     <!-- CABEÇALHO -->
     <header class="header">
@@ -19,7 +19,7 @@
 
         <nav class="menu">
             <a href="#" class="ativo">Início</a>
-            <a href="login.html">Login</a>
+            <a href="pages/login.html">Login</a>
         </nav>
     </header>
 
@@ -56,7 +56,7 @@
             </article>
 
             <!-- PONTOS TURÍSTICOS -->
-            <article class="card" id="pontos">
+            <article class="card" id="pontos" role="link" tabindex="0" aria-label="Ver pontos turísticos de Pedro II">
                 <div class="imagem-card">
                     <img src="img/gritador.webp" alt="Mirante do Gritador em Pedro II" loading="lazy">
                 </div>
@@ -70,7 +70,7 @@
             </article>
 
             <!-- EMPREENDIMENTOS -->
-            <article class="card" id="empreendimentos">
+            <article class="card" id="empreendimentos" role="link" tabindex="0" aria-label="Ver empreendimentos de Pedro II">
                 <div class="imagem-card">
                     <img src="img/empreendimento.webp" alt="Empreendimentos em Pedro II" loading="lazy">
                 </div>
@@ -96,6 +96,35 @@
     
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+    const cardPontos = document.getElementById("pontos");
+
+    if (cardPontos) {
+        cardPontos.style.cursor = "pointer";
+        cardPontos.addEventListener("click", function() {
+            window.location.href = "pages/pontos-turisticos.html";
+        });
+        cardPontos.addEventListener("keydown", function(event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                window.location.href = "pages/pontos-turisticos.html";
+            }
+        });
+    }
+
+    const cardEmpreendimentos = document.getElementById("empreendimentos");
+    if (cardEmpreendimentos) {
+        cardEmpreendimentos.style.cursor = "pointer";
+        cardEmpreendimentos.addEventListener("click", function() {
+            window.location.href = "pages/empreendimentos.html";
+        });
+        cardEmpreendimentos.addEventListener("keydown", function(event) {
+            if (event.key === "Enter" || event.key === " ") {
+                event.preventDefault();
+                window.location.href = "pages/empreendimentos.html";
+            }
+        });
+    }
+
     const cardEventos = document.getElementById("eventos");
 
     if (!cardEventos) return;
@@ -105,7 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
     cardEventos.setAttribute("tabindex", "0");
 
     function abrirEventos() {
-        window.location.href = "eventos.html";
+        window.location.href = "pages/eventos.html";
     }
 
     cardEventos.addEventListener("click", abrirEventos);

@@ -20,12 +20,12 @@ Autenticação: demonstração acadêmica
 
 const CHAVE = "p2-conecta-eventos-v1";
 
-const perfilLogado = sessionStorage.getItem(
+const perfilLogado = localStorage.getItem(
     "p2PerfilDemo"
 );
 
 const emailLogado = (
-    sessionStorage.getItem("p2EmailDemo") || ""
+    localStorage.getItem("p2EmailDemo") || ""
 ).trim().toLowerCase();
 
 const usuarioAdministrador = perfilLogado === "admin";
@@ -78,7 +78,7 @@ let processandoImagem = false;
 // ======================================
 
 if (!usuarioAutorizado) {
-    window.location.replace("login.html");
+    window.location.replace("../../pages/login.html");
 } else {
     iniciarGerenciamento();
 }
@@ -89,7 +89,7 @@ function iniciarGerenciamento() {
         
        // Recuperar o nome salvo no login 
         const nomeCompleto = (
-            sessionStorage.getItem("p2NomeUsuario") || ""
+            localStorage.getItem("p2NomeUsuario") || ""
         ).trim();
             
        // Pegar somente o primeiro nome
@@ -132,11 +132,11 @@ function iniciarGerenciamento() {
 }
 
 function sair() {
-    sessionStorage.removeItem("p2PerfilDemo");
-    sessionStorage.removeItem("p2EmailDemo");
-    sessionStorage.removeItem("p2NomeUsuario"); 
+    localStorage.removeItem("p2PerfilDemo");
+    localStorage.removeItem("p2EmailDemo");
+    localStorage.removeItem("p2NomeUsuario"); 
 
-    window.location.replace("login.html");
+    window.location.replace("../../pages/login.html");
 }
 
 // ======================================
@@ -477,6 +477,8 @@ function limparFormulario() {
 
     imagemAtual = "";
 
+    campoImagem.required = true;
+
     processandoImagem = false;
 
     mostrarPreview("");
@@ -620,6 +622,8 @@ function editarEvento(id) {
 
     imagemAtual = evento.imagem || "";
 
+    campoImagem.required = !imagemAtual;
+
     if (campoImagem) {
         campoImagem.value = "";
     }
@@ -754,6 +758,11 @@ function salvarEvento() {
     }
 
     if (!form.reportValidity()) {
+        return;
+    }
+
+    if (!imagemAtual) {
+        mensagem.textContent = "Selecione uma imagem para o evento.";
         return;
     }
 

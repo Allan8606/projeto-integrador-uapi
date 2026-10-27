@@ -8,25 +8,28 @@
 
     <title>Cadastro de Eventos | P2 Conecta</title>
 
-    <link rel="stylesheet" href="css/eventos.css">
-    <script src="js/eventos.js" defer></script>
+    <link rel="stylesheet" href="../../styles/cadastros/cadastro-eventos.css">
+    <script src="../../js/eventos.js" defer></script>
+    <script src="../../js/menu-usuario.js" defer></script>
 </head>
 
-<body>
+<body data-grupo="cadastros">
 
     <!-- CABEÇALHO -->
     <header class="header">
 
-        <a href="index.html" class="logo">
-            <img src="img/logo.webp" alt="Logo P2 Conecta">
+        <a href="../../index.html" class="logo">
+            <img src="../../img/logo.webp" alt="Logo P2 Conecta">
         </a>
 
         <nav class="menu">
-            <a href="index.html">Início</a>
-            <a href="index.html#eventos">Eventos</a>
-            <a href="index.html#pontos">Pontos turísticos</a>
-            <a href="index.html#empreendimentos">Empreendimentos</a>
-            <a href="login.html">Login</a>
+            <a href="../../index.html">Início</a>
+            <a href="../../index.html#eventos">Eventos</a>
+            <a href="../pontos-turisticos.html">Pontos turísticos</a>
+            <a href="../empreendimentos.html">Empreendimentos</a>
+            <a href="cadastro-pontos-turisticos.html">Gerenciar pontos</a>
+            <a href="cadastro-empreendimentos.html">Gerenciar empreendimentos</a>
+            <a href="../login.html">Login</a>
         </nav>
 
     </header>
@@ -34,14 +37,6 @@
     <main>
 
         
-        <div class="usuario-logado">
-    
-            <p id="usuarioAtual"></p>
-            <button type="button" id="btnSair">Sair</button>
-
-        </div>
-
-
         <!-- APRESENTAÇÃO -->
         <section class="intro">
             <span class="tag">Painel de gerenciamento</span>
@@ -132,13 +127,14 @@
                     <!-- IMAGEM DO EVENTO -->
                     <div class="campo largura-total">
                         <label for="imagem">
-                            Imagem do Evento
+                            Imagem do Evento *
                         </label>
 
                         <input
                             type="file"
                             id="imagem"
                             accept="image/jpeg,image/png,image/webp"
+                            required
                         >
 
                         <small>
